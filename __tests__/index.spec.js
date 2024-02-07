@@ -6,7 +6,30 @@ pluginTester({
   pluginName: "babel-plugin-react-native-stylename-to-style",
   snapshot: true,
   pluginOptions: {
-    extensions: ["css"]
+    extensions: ["css"],
+    addImport: "@whitelabel/values/styles.css",
+    addAttributes: ["height", "width"]
+  },
+  babelOptions: {
+    babelrc: true,
+    filename: "index.js"
+  },
+  tests: [
+    {
+      title: "Should add anonymous import",
+      code: `
+        const Foo = () =>  <View styleName="login-logo" height={15}><Text>Foo</Text></View>
+      `
+    }
+  ]
+});
+
+pluginTester({
+  plugin,
+  pluginName: "babel-plugin-react-native-stylename-to-style",
+  snapshot: true,
+  pluginOptions: {
+    extensions: ["css"],
   },
   babelOptions: {
     babelrc: true,
@@ -16,8 +39,7 @@ pluginTester({
     {
       title: "Should transform single styleName to styles object",
       code: `
-        import './Button.css';
-        const Foo = () =>  <View styleName="wrapper"><Text>Foo</Text></View>
+        const Foo = () =>  <View styleName="login-logo" height={15}><Text>Foo</Text></View>
       `
     },
     {

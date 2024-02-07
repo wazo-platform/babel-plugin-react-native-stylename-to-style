@@ -76,6 +76,37 @@ var Foo = function Foo() {
 "
 `;
 
+exports[`babel-plugin-react-native-stylename-to-style Should add anonymous import: Should add anonymous import 1`] = `
+"
+const Foo = () =>  <View styleName=\\"login-logo\\" height={15}><Text>Foo</Text></View>
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+\\"use strict\\";
+
+var _styles = require(\\"@whitelabel/values/styles.css\\");
+
+var _styles2 = _interopRequireDefault(_styles);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var _reactNativeDynamicStyleProcessor = require(\\"react-native-dynamic-style-processor\\");
+
+var Foo = function Foo() {
+  return React.createElement(
+    View,
+    { style: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"], height: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].height || 15, width: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].width
+    },
+    React.createElement(
+      Text,
+      null,
+      \\"Foo\\"
+    )
+  );
+};
+"
+`;
+
 exports[`babel-plugin-react-native-stylename-to-style Should ignore anonymous imports with other extensions and transform single styleName to styles object: Should ignore anonymous imports with other extensions and transform single styleName to styles object 1`] = `
 "
 import './foo.js';
@@ -952,25 +983,16 @@ var Foo = function Foo() {
 
 exports[`babel-plugin-react-native-stylename-to-style Should transform single styleName to styles object: Should transform single styleName to styles object 1`] = `
 "
-import './Button.css';
-const Foo = () =>  <View styleName=\\"wrapper\\"><Text>Foo</Text></View>
+const Foo = () =>  <View styleName=\\"login-logo\\" height={15}><Text>Foo</Text></View>
 
       ↓ ↓ ↓ ↓ ↓ ↓
 
 \\"use strict\\";
 
-var _Button = require(\\"./Button.css\\");
-
-var _Button2 = _interopRequireDefault(_Button);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _reactNativeDynamicStyleProcessor = require(\\"react-native-dynamic-style-processor\\");
-
 var Foo = function Foo() {
   return React.createElement(
     View,
-    { style: _reactNativeDynamicStyleProcessor.process(_Button2.default).wrapper },
+    { styleName: \\"login-logo\\", height: 15 },
     React.createElement(
       Text,
       null,

@@ -128,6 +128,10 @@ module.exports = function(babel) {
           state.reqName = path.scope.generateUidIdentifier(
             "react-native-dynamic-style-processor"
           );
+
+          if (state.opts.addImport) {
+            path.unshiftContainer("body", t.importDeclaration([], t.stringLiteral(state.opts.addImport)));
+          }
         },
         exit(path, state) {
           if (!state.hasTransformedClassName) {
@@ -228,6 +232,22 @@ module.exports = function(babel) {
             }
             styleName.node.name.name = "style";
           }
+
+          const attritubes = state.opts.addAttributes || [];
+          attritubes.forEach(attritube => {
+            if (!expressions.length) {
+              return;
+            }
+            const attrNode = path.node.attributes.find(attr => attr.name.name === attritube);
+            const expression = t.logicalExpression('&&', expressions[0], t.memberExpression(expressions[0], t.identifier(attritube)));
+
+            if (attrNode) {
+              attrNode.value = t.JSXExpressionContainer(t.logicalExpression('||', expression, attrNode.value.expression));
+            } else {
+              path.node.attributes.push(t.JSXAttribute(t.JSXIdentifier(attritube), t.JSXExpressionContainer(expression)));
+            }
+          });
+
           style = null;
           styleName = null;
           specifier = null;
