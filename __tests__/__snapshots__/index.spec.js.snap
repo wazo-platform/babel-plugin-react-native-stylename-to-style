@@ -180,6 +180,28 @@ var Foo = function Foo() {
 "
 `;
 
+exports[`babel-plugin-react-native-stylename-to-style Should not import css when not stylename is used: Should not import css when not stylename is used 1`] = `
+"
+const Foo = () =>  <View height={15}><Text>Foo</Text></View>
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+\\"use strict\\";
+
+var Foo = function Foo() {
+  return React.createElement(
+    View,
+    { height: 15 },
+    React.createElement(
+      Text,
+      null,
+      \\"Foo\\"
+    )
+  );
+};
+"
+`;
+
 exports[`babel-plugin-react-native-stylename-to-style Should support expression with single styleName output and existing style. Variable: Should support expression with single styleName output and existing style. Variable 1`] = `
 "
 import './Button.css';

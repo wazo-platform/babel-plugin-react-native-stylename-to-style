@@ -8,6 +8,28 @@ pluginTester({
   pluginOptions: {
     extensions: ["css"],
     addImport: "@whitelabel/values/styles.css",
+  },
+  babelOptions: {
+    babelrc: true,
+    filename: "index.js"
+  },
+  tests: [
+    {
+      title: "Should not import css when not stylename is used",
+      code: `
+        const Foo = () =>  <View height={15}><Text>Foo</Text></View>
+      `
+    }
+  ]
+});
+
+pluginTester({
+  plugin,
+  pluginName: "babel-plugin-react-native-stylename-to-style",
+  snapshot: true,
+  pluginOptions: {
+    extensions: ["css"],
+    addImport: "@whitelabel/values/styles.css",
     addAttributes: ["height", "width"]
   },
   babelOptions: {

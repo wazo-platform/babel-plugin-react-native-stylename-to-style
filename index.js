@@ -10,6 +10,7 @@ module.exports = function(babel) {
   var specifier = null;
   var randomSpecifier = null;
   var t = babel.types;
+  var hasJsx = false;
 
   function isRequire(node) {
     return (
@@ -134,6 +135,14 @@ module.exports = function(babel) {
           }
         },
         exit(path, state) {
+          if (!state.hasStyleName && state.opts.addImport) {
+            // Remove import for non jsx file
+            const idx = path.get('body').findIndex(p => p.isImportDeclaration() && p.node.source.value === state.opts.addImport);
+            if (idx !== -1) {
+              path.get('body')[idx].remove();
+            }
+          }
+
           if (!state.hasTransformedClassName) {
             return;
           }
@@ -256,6 +265,7 @@ module.exports = function(babel) {
       JSXAttribute: function JSXAttribute(path, state) {
         var name = path.node.name.name;
         if (name === "styleName") {
+          state.hasStyleName = true;
           styleName = path;
         } else if (name === "style") {
           style = path;
