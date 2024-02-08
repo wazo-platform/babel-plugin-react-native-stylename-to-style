@@ -52,6 +52,38 @@ pluginTester({
   snapshot: true,
   pluginOptions: {
     extensions: ["css"],
+    attributeName: "testID",
+    addImport: "@whitelabel/values/styles.css",
+    addAttributes: ["height", "width"]
+  },
+  babelOptions: {
+    babelrc: true,
+    filename: "index.js"
+  },
+  tests: [
+    {
+      title: "Should add anonymous import for custom attribute name",
+      code: `
+        const Foo = () =>  <View testID="login-logo" height={15}><Text>Foo</Text></View>
+      `
+    },
+
+    {
+      title: "Should add anonymous import for custom dynamic attribute name",
+      code: `
+        const id = "login-logo";
+        const Foo = () =>  <View testID={id} height={15}><Text>Foo</Text></View>
+      `
+    }
+  ]
+});
+
+pluginTester({
+  plugin,
+  pluginName: "babel-plugin-react-native-stylename-to-style",
+  snapshot: true,
+  pluginOptions: {
+    extensions: ["css"],
   },
   babelOptions: {
     babelrc: true,

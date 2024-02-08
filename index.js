@@ -5,12 +5,11 @@ function getExt(node) {
 }
 
 module.exports = function(babel) {
-  var styleName = null;
+  var attribute = null;
   var style = null;
   var specifier = null;
   var randomSpecifier = null;
   var t = babel.types;
-  var hasJsx = false;
 
   function isRequire(node) {
     return (
@@ -64,14 +63,14 @@ module.exports = function(babel) {
       .filter(e => e !== undefined);
   }
 
-  // Support dynamic styleName
+  // Support dynamic attribute
   // TODO: Add support for multiple named imports
   // Generates the following:
-  //   styleName={x}
+  //   attribute={x}
   //   | | |
   //   V V V
   //
-  //   styleName={
+  //   attribute={
   //     (x || '').split(' ').filter(Boolean).map(function(name) {
   //       return require('react-native-dynamic-style-processor').process(_Button2.default)[name]
   //     }
@@ -83,7 +82,7 @@ module.exports = function(babel) {
   //     Example:
   //       import foo from './Button.css'
   //       let x = 'wrapper' // NOT 'foo.wrapper'
-  //       <View styleName={x} />
+  //       <View attribute={x} />
   function getStyleFromExpression(expression, state) {
     var obj = (specifier || randomSpecifier).local.name;
     var expressionResult = t.logicalExpression(
@@ -137,7 +136,7 @@ module.exports = function(babel) {
         exit(path, state) {
           var extensions = state.opts != null && Array.isArray(state.opts.extensions) && state.opts.extensions;
 
-          if (!state.hasStyleName && state.opts.addImport) {
+          if (!state.hasAttribute && state.opts.addImport) {
             // Remove import for non jsx file
             const idx = path.get('body').findIndex(p => p.isImportDeclaration() && extensions.indexOf(getExt(p.node)) !== -1);
             if (idx !== -1) {
@@ -204,44 +203,44 @@ module.exports = function(babel) {
           var expressions = null;
 
           if (
-            styleName === null ||
+            attribute === null ||
             randomSpecifier === null ||
             !(
-              t.isStringLiteral(styleName.node.value) ||
-              t.isJSXExpressionContainer(styleName.node.value)
+              t.isStringLiteral(attribute.node.value) ||
+              t.isJSXExpressionContainer(attribute.node.value)
             )
           ) {
             return;
           }
 
-          if (t.isStringLiteral(styleName.node.value)) {
-            var classNames = styleName.node.value.value
+          if (t.isStringLiteral(attribute.node.value)) {
+            var classNames = attribute.node.value.value
               .split(" ")
               .filter(v => v.trim() !== "");
             expressions = getStylesFromClassNames(classNames, state);
-          } else if (t.isJSXExpressionContainer(styleName.node.value)) {
+          } else if (t.isJSXExpressionContainer(attribute.node.value)) {
             expressions = [
-              getStyleFromExpression(styleName.node.value.expression, state)
+              getStyleFromExpression(attribute.node.value.expression, state)
             ];
           }
 
-          var hasStyleNameAndStyle =
-            styleName &&
+          var hasAttributeAndStyle =
+            attribute &&
             style &&
-            styleName.parentPath.node === style.parentPath.node;
+            attribute.parentPath.node === style.parentPath.node;
 
-          if (hasStyleNameAndStyle) {
+          if (hasAttributeAndStyle) {
             style.node.value = t.arrayExpression(
               expressions.concat([style.node.value.expression])
             );
-            styleName.remove();
+            attribute.remove();
           } else {
             if (expressions.length > 1) {
-              styleName.node.value = t.arrayExpression(expressions);
+              attribute.node.value = t.arrayExpression(expressions);
             } else {
-              styleName.node.value = expressions[0];
+              attribute.node.value = expressions[0];
             }
-            styleName.node.name.name = "style";
+            attribute.node.name.name = "style";
           }
 
           const attritubes = state.opts.addAttributes || [];
@@ -260,15 +259,17 @@ module.exports = function(babel) {
           });
 
           style = null;
-          styleName = null;
+          attribute = null;
           specifier = null;
         }
       },
       JSXAttribute: function JSXAttribute(path, state) {
         var name = path.node.name.name;
-        if (name === "styleName") {
-          state.hasStyleName = true;
-          styleName = path;
+        const attributeName = state.opts.attributeName || "styleName";
+
+        if (name === attributeName) {
+          state.hasAttribute = true;
+          attribute = path;
         } else if (name === "style") {
           style = path;
         }
