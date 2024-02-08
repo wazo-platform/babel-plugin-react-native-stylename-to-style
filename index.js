@@ -135,9 +135,11 @@ module.exports = function(babel) {
           }
         },
         exit(path, state) {
+          var extensions = state.opts != null && Array.isArray(state.opts.extensions) && state.opts.extensions;
+
           if (!state.hasStyleName && state.opts.addImport) {
             // Remove import for non jsx file
-            const idx = path.get('body').findIndex(p => p.isImportDeclaration() && p.node.source.value === state.opts.addImport);
+            const idx = path.get('body').findIndex(p => p.isImportDeclaration() && extensions.indexOf(getExt(p.node)) !== -1);
             if (idx !== -1) {
               path.get('body')[idx].remove();
             }
