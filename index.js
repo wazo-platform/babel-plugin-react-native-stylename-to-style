@@ -1,9 +1,3 @@
-var nodePath = require("path");
-
-function getExt(node) {
-  return nodePath.extname(node.source.value).replace(/^\./, "");
-}
-
 module.exports = function(babel) {
   var attribute = null;
   var style = null;
@@ -137,8 +131,8 @@ module.exports = function(babel) {
           var extensions = state.opts != null && Array.isArray(state.opts.extensions) && state.opts.extensions;
 
           if (!state.hasAttribute && state.opts.addImport) {
-            // Remove import for non jsx file
-            const idx = path.get('body').findIndex(p => p.isImportDeclaration() && extensions.indexOf(getExt(p.node)) !== -1);
+            // Remove import for non jsx file, allow extension like `.css.ts`
+            const idx = path.get('body').findIndex(p => p.isImportDeclaration() && extensions.findIndex(ext => p.node.source.value.endsWith(ext)) !== -1);
             if (idx !== -1) {
               path.get('body')[idx].remove();
             }
@@ -171,12 +165,11 @@ module.exports = function(babel) {
         }
 
         var node = path.node;
-
         var anonymousImports = path.container.filter(n => {
           return (
             t.isImportDeclaration(n) &&
             n.specifiers.length === 0 &&
-            extensions.indexOf(getExt(n)) > -1
+            extensions.findIndex(ext => n.source.value.endsWith(ext)) > -1
           );
         });
 
@@ -186,7 +179,7 @@ module.exports = function(babel) {
           );
         }
 
-        if (extensions.indexOf(getExt(node)) === -1) {
+        if (extensions.findIndex(ext => node.source.value.endsWith(ext)) === -1) {
           return;
         }
 
@@ -224,6 +217,11 @@ module.exports = function(babel) {
             ];
           }
 
+          // It should not erase the attribute when different from `styleName`
+          if (state.opts.attributeName && state.opts.attributeName !== "styleName") {
+            path.node.attributes.push(t.JSXAttribute(t.JSXIdentifier(state.opts.attributeName), attribute.node.value));
+          }
+
           var hasAttributeAndStyle =
             attribute &&
             style &&
@@ -248,7 +246,7 @@ module.exports = function(babel) {
             if (!expressions.length) {
               return;
             }
-            const attrNode = path.node.attributes.find(attr => attr.name.name === attritube);
+            const attrNode = path.node.attributes.find(attr => attr.name && attr.name.name === attritube);
             const expression = t.logicalExpression('&&', expressions[0], t.memberExpression(expressions[0], t.identifier(attritube)));
 
             if (attrNode) {
