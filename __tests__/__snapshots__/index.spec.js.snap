@@ -331,9 +331,9 @@ var x = 'wrapper';
 var Foo = function Foo() {
   return React.createElement(
     View,
-    { style: [(x || '').split(' ').filter(Boolean).map(function (name) {
+    { style: [{ height: 1 }, (x || '').split(' ').filter(Boolean).map(function (name) {
         return _reactNativeDynamicStyleProcessor.process(_Button2.default)[name];
-      }), { height: 1 }] },
+      })] },
     React.createElement(
       Text,
       null,
@@ -548,7 +548,7 @@ var _reactNativeDynamicStyleProcessor = require('react-native-dynamic-style-proc
 var Foo = function Foo() {
   return React.createElement(
     View,
-    { style: [_reactNativeDynamicStyleProcessor.process(_Button2.default).wrapper, _reactNativeDynamicStyleProcessor.process(_Grid2.default).column, { height: 1 }] },
+    { style: [{ height: 1 }, _reactNativeDynamicStyleProcessor.process(_Button2.default).wrapper, _reactNativeDynamicStyleProcessor.process(_Grid2.default).column] },
     React.createElement(
       Text,
       null,
@@ -896,7 +896,7 @@ var _reactNativeDynamicStyleProcessor = require(\\"react-native-dynamic-style-pr
 var Foo = function Foo() {
   return React.createElement(
     View,
-    { style: [_reactNativeDynamicStyleProcessor.process(_Button2.default).wrapper, _reactNativeDynamicStyleProcessor.process(_Button2.default).red, { marginTop: 10 }] },
+    { style: [{ marginTop: 10 }, _reactNativeDynamicStyleProcessor.process(_Button2.default).wrapper, _reactNativeDynamicStyleProcessor.process(_Button2.default).red] },
     React.createElement(
       Text,
       null,
@@ -1055,7 +1055,7 @@ var _reactNativeDynamicStyleProcessor = require(\\"react-native-dynamic-style-pr
 var Foo = function Foo() {
   return React.createElement(
     View,
-    { style: [_reactNativeDynamicStyleProcessor.process(_Button2.default).wrapper, { marginTop: 10 }] },
+    { style: [{ marginTop: 10 }, _reactNativeDynamicStyleProcessor.process(_Button2.default).wrapper] },
     React.createElement(
       Text,
       null,

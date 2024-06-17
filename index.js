@@ -132,7 +132,7 @@ module.exports = function(babel) {
 
           if (!state.hasAttribute && state.opts.addImport) {
             // Remove import for non jsx file, allow extension like `.css.ts`
-            const idx = path.get('body').findIndex(p => p.isImportDeclaration() && extensions.findIndex(ext => p.node.source.value.endsWith(ext)) !== -1);
+            const idx = path.get('body').findIndex(p => p.isImportDeclaration() && extensions.findIndex(ext => p.node.source.value.endsWith(`.${ext}`)) !== -1);
             if (idx !== -1) {
               path.get('body')[idx].remove();
             }
@@ -169,7 +169,7 @@ module.exports = function(babel) {
           return (
             t.isImportDeclaration(n) &&
             n.specifiers.length === 0 &&
-            extensions.findIndex(ext => n.source.value.endsWith(ext)) > -1
+            extensions.findIndex(ext => n.source.value.endsWith(`.${ext}`)) > -1
           );
         });
 
@@ -179,7 +179,7 @@ module.exports = function(babel) {
           );
         }
 
-        if (extensions.findIndex(ext => node.source.value.endsWith(ext)) === -1) {
+        if (extensions.findIndex(ext => node.source.value.endsWith(`.${ext}`)) === -1) {
           return;
         }
 
@@ -229,7 +229,7 @@ module.exports = function(babel) {
 
           if (hasAttributeAndStyle) {
             style.node.value = t.arrayExpression(
-              expressions.concat([style.node.value.expression])
+              [style.node.value.expression].concat(expressions)
             );
             attribute.remove();
           } else {
