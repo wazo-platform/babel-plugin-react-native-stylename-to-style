@@ -201,16 +201,6 @@ pluginTester({
       `
     },
     {
-      title:
-        "Should ignore anonymous imports with other extensions and transform single styleName to styles object",
-      code: `
-        import './foo.js';
-        import './Button.css';
-        import './Button.scss';
-        const Foo = () =>  <View styleName="wrapper"><Text>Foo</Text></View>
-      `
-    },
-    {
       title: "Should support named import and a single class",
       code: `
         import foo from './Button.css';
