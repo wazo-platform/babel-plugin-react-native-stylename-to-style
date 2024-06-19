@@ -90,6 +90,8 @@ const Foo = () =>  <View testID=\\"login-logo\\" height={15}><Text>Foo</Text></V
 
 \\"use strict\\";
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _styles = require(\\"@whitelabel/values/styles.css\\");
 
 var _styles2 = _interopRequireDefault(_styles);
@@ -101,9 +103,8 @@ var _reactNativeDynamicStyleProcessor = require(\\"react-native-dynamic-style-pr
 var Foo = function Foo() {
   return React.createElement(
     View,
-    { style: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"], height: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].height || 15, testID: \\"login-logo\\",
-      width: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].width
-    },
+    _extends({}, _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"], { style: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"], height: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].height || 15, testID: \\"login-logo\\"
+    }),
     React.createElement(
       Text,
       null,
@@ -123,6 +124,8 @@ const Foo = () =>  <View testID={id} height={15}><Text>Foo</Text></View>
 
 \\"use strict\\";
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _styles = require(\\"@whitelabel/values/styles.css\\");
 
 var _styles2 = _interopRequireDefault(_styles);
@@ -135,19 +138,16 @@ var id = \\"login-logo\\";
 var Foo = function Foo() {
   return React.createElement(
     View,
-    { style: (id || \\"\\").split(\\" \\").filter(Boolean).map(function (name) {
+    _extends({}, (id || \\"\\").split(\\" \\").filter(Boolean).map(function (name) {
+      return _reactNativeDynamicStyleProcessor.process(_styles2.default)[name];
+    }), { style: (id || \\"\\").split(\\" \\").filter(Boolean).map(function (name) {
         return _reactNativeDynamicStyleProcessor.process(_styles2.default)[name];
       }), height: (id || \\"\\").split(\\" \\").filter(Boolean).map(function (name) {
         return _reactNativeDynamicStyleProcessor.process(_styles2.default)[name];
       }) && (id || \\"\\").split(\\" \\").filter(Boolean).map(function (name) {
         return _reactNativeDynamicStyleProcessor.process(_styles2.default)[name];
-      }).height || 15, testID: id,
-      width: (id || \\"\\").split(\\" \\").filter(Boolean).map(function (name) {
-        return _reactNativeDynamicStyleProcessor.process(_styles2.default)[name];
-      }) && (id || \\"\\").split(\\" \\").filter(Boolean).map(function (name) {
-        return _reactNativeDynamicStyleProcessor.process(_styles2.default)[name];
-      }).width
-    },
+      }).height || 15, testID: id
+    }),
     React.createElement(
       Text,
       null,
@@ -166,36 +166,7 @@ const Foo = () =>  <View styleName=\\"login-logo\\" height={15}><Text>Foo</Text>
 
 \\"use strict\\";
 
-var _styles = require(\\"@whitelabel/values/styles.css\\");
-
-var _styles2 = _interopRequireDefault(_styles);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var _reactNativeDynamicStyleProcessor = require(\\"react-native-dynamic-style-processor\\");
-
-var Foo = function Foo() {
-  return React.createElement(
-    View,
-    { style: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"], height: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].height || 15, width: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].width
-    },
-    React.createElement(
-      Text,
-      null,
-      \\"Foo\\"
-    )
-  );
-};
-"
-`;
-
-exports[`babel-plugin-react-native-stylename-to-style Should add anonymous import: Should add anonymous import 2`] = `
-"
-const Foo = () =>  <View testID=\\"login-logo\\" height={15}><Text>Foo</Text></View>
-
-      ↓ ↓ ↓ ↓ ↓ ↓
-
-\\"use strict\\";
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _styles = require(\\"@whitelabel/values/styles.css\\");
 
@@ -208,8 +179,7 @@ var _reactNativeDynamicStyleProcessor = require(\\"react-native-dynamic-style-pr
 var Foo = function Foo() {
   return React.createElement(
     View,
-    { style: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"], height: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].height || 15, width: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].width
-    },
+    _extends({}, _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"], { style: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"], height: _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"] && _reactNativeDynamicStyleProcessor.process(_styles2.default)[\\"login-logo\\"].height || 15 }),
     React.createElement(
       Text,
       null,

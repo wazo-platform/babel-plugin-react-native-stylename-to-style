@@ -242,6 +242,7 @@ module.exports = function(babel) {
           }
 
           const attritubes = state.opts.addAttributes || [];
+          let shouldAddSpread = false;
           attritubes.forEach(attritube => {
             if (!expressions.length) {
               return;
@@ -252,9 +253,13 @@ module.exports = function(babel) {
             if (attrNode) {
               attrNode.value = t.JSXExpressionContainer(t.logicalExpression('||', expression, attrNode.value.expression));
             } else {
-              path.node.attributes.push(t.JSXAttribute(t.JSXIdentifier(attritube), t.JSXExpressionContainer(expression)));
+              shouldAddSpread = true;
             }
           });
+
+          if (shouldAddSpread) {
+            path.node.attributes.unshift(t.JSXSpreadAttribute(expressions[0]));
+          }
 
           style = null;
           attribute = null;
